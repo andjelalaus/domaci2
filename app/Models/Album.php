@@ -13,6 +13,7 @@ class Album extends Model
         'datum',
         'izdavacka_kuca',
         'opis',
+        'user_id'
     ];
     public function pesme(){
         return $this->hasMany(Pesma::class);

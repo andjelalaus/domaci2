@@ -55,7 +55,7 @@ class PesmaController extends Controller
             'ime' => $request->ime,
             'trajanje' =>  $request->trajanje,
             'dodatan_izvodjac' =>  $request->dodatan_izvodjac,
-            'album_id' =>$request->author_id,
+            'album_id' =>$request->album_id,
             
         ]);
         return response()->json(['Pesma kreirana uspesno',new PesmeResource($pesma)]);

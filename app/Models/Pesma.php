@@ -13,6 +13,7 @@ class Pesma extends Model
         'ime',
         'trajanje',
         'dodatan_izvodjac',
+        'album_id'
     ];
     public function album(){
         return $this->belongsTo(Album::class);

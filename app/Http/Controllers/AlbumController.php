@@ -56,7 +56,7 @@ class AlbumController extends Controller
             'datum' =>  $request->datum,
             'izdavacka_kuca' =>  $request->izdavacka_kuca,
             'opis' => $request->opis,
-            'user_id' => Auth::user()->id,
+            'user_id' => $request->user_id,
         ]);
         return response()->json(['Album kreiran uspesno',new AlbumResource($album)]);
     }
@@ -113,6 +113,7 @@ class AlbumController extends Controller
         $album->datum = $request->datum;
         $album->izdavacka_kuca = $request->izdavacka_kuca;
         $album->opis = $request->opis;
+        $album->user_id =$request->user_id;
 
         $album->save();
         return response()->json(['Album update uspesno',new AlbumResource($album)]);
