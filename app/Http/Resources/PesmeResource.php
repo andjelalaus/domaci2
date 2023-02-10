@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class AlbumResource extends JsonResource
+class PesmeResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -12,17 +12,16 @@ class AlbumResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
-    public static $wrap = 'album';
+    public static $wrap = 'pesma';
     public function toArray($request)
     {
         return [
             'id' => $this->resource->id,
-            'naziv' => $this->resource->naziv,
-            'izdavacka_kuca' => $this->resource->izdavacka_kuca,
-            'datum'=>$this->resource->datum,
-            'opis'=>$this->resource->opis,
-            'user'=>new UserResource($this->resource->user)
-
+            'ime' => $this->resource->ime,
+            'album_id' => new AlbumResource($this->resource->album),
+            'trajanje'=>$this->resource->trajanje,
+            'dodatan_izvodjac'=>$this->resource->dodatan_izvodjac,
+            
         ];
     }
 }

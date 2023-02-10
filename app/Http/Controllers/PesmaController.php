@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UserCollection;
-use App\Http\Resources\UserResource;
-use App\Models\User;
+use App\Http\Resources\PesmeCollection;
+use App\Http\Resources\PesmeResource;
+use App\Models\Pesma;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class PesmaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +16,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        return new UserCollection($users);
+        $pesme = Pesma::all();
+        return new PesmeCollection($pesme);
     }
 
     /**
@@ -44,25 +44,27 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\pesma  $pesma
      * @return \Illuminate\Http\Response
      */
-    public function show($user_id)
+    public function show($pesma_id)
     {
-        $user= User::find($user_id);
-        if(is_null($user)){
-            return response()->json('Data not found', 404);
+        $pesma = Pesma::find($pesma_id);
+        if(is_null($pesma)){
+            return response()->json('Not found', 401);
         }
-        return new UserResource($user);
+        else{
+            return new  PesmeResource($pesma);
+        }
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\pesma  $pesma
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit(pesma $pesma)
     {
         //
     }
@@ -71,10 +73,10 @@ class UserController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\pesma  $pesma
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, pesma $pesma)
     {
         //
     }
@@ -82,10 +84,10 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\pesma  $pesma
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(pesma $pesma)
     {
         //
     }
