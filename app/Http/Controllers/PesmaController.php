@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\PesmeCollection;
 use App\Http\Resources\PesmeResource;
+use App\Models\Album;
 use App\Models\Pesma;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class PesmaController extends Controller
 {
@@ -38,7 +41,24 @@ class PesmaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(),[
+
+            'ime' => 'required|string|max:100',
+            'trajanje' => 'required|integer',
+            'dodatan_izvodjac' => 'string',
+            'album_id' => 'required|integer|max:100',
+        ]);
+        if($validator->fails()){
+            return response()->json($validator->errors());
+        }
+        $pesma = Pesma::create([
+            'ime' => $request->ime,
+            'trajanje' =>  $request->trajanje,
+            'dodatan_izvodjac' =>  $request->dodatan_izvodjac,
+            'album_id' =>$request->author_id,
+            
+        ]);
+        return response()->json(['Pesma kreirana uspesno',new PesmeResource($pesma)]);
     }
 
     /**
@@ -78,7 +98,25 @@ class PesmaController extends Controller
      */
     public function update(Request $request, pesma $pesma)
     {
-        //
+        $validator = Validator::make($request->all(),[
+
+            'ime' => 'required|string|max:100',
+            'trajanje' => 'required|integer',
+            'dodatan_izvodjac' => 'string',
+            'album_id' => 'required|integer|max:100',
+        ]);
+        if($validator->fails()){
+            return response()->json($validator->errors());
+        }
+      
+        $pesma->ime = $request->ime;
+        $pesma->trajanje = $request->trajanje;
+        $pesma->dodatan_izvodjac = $request->dodatan_izvodjac;
+        $pesma->album_id = $request->album_id;
+
+        $pesma->save();
+        return response()->json(['Pesma update uspesno',new PesmeResource($pesma)]);
+
     }
 
     /**
@@ -89,6 +127,7 @@ class PesmaController extends Controller
      */
     public function destroy(pesma $pesma)
     {
-        //
+        $pesma->delete();
+        return response()->json('Pesma obrisan uspesno');
     }
 }

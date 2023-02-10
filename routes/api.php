@@ -51,14 +51,15 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
         Route::get('/profile',function(Request $request){
             return auth()->user();
         });
-        Route::resource('users',UserController::class)->only(['update','edit','destroy']);
+        Route::resource('users',UserController::class)->only(['update','destroy']);
         Route::resource('albumi',AlbumController::class)->only(['update','store','destroy']);
+        Route::resource('pesme',PesmaController::class)->only(['update','store','destroy']);
         //user album
         Route::resource('users.albumi', UserAlbumController::class)->only(['update','edit','destroy']);;
         //album pesma
         Route::resource('albumi.pesme', AlbumPesmaController::class)->only(['update','store','destroy']);
-        Route::resource('pesme',PesmaController::class)->only(['update','store','destroy']);
-        Route::resource('albumi',AlbumController::class)->only(['update','store','destroy']);
+        
+        
 
         Route::post('/logout',[AuthController::class,'logout']);
     });

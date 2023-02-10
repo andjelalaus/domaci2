@@ -9,6 +9,11 @@ class Pesma extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'ime',
+        'trajanje',
+        'dodatan_izvodjac',
+    ];
     public function album(){
         return $this->belongsTo(Album::class);
     }

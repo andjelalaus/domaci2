@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('naziv')->unique();
             $table->date('datum');
-            $table->string('izadvacka_kuca');
+            $table->string('izadvacka_kuca')->default("M&M");
             $table->string('opis');
             $table->rememberToken();
             $table->timestamp('published_at')->nullable();

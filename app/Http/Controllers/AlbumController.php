@@ -6,6 +6,10 @@ use App\Http\Resources\AlbumCollection;
 use App\Http\Resources\AlbumResource;
 use App\Models\album;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+
+
 
 class AlbumController extends Controller
 {
@@ -27,7 +31,7 @@ class AlbumController extends Controller
      */
     public function create()
     {
-        //
+     
     }
 
     /**
@@ -38,7 +42,23 @@ class AlbumController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(),[
+            'naziv' => 'required|string|max:100',
+            'datum' => 'required|date',
+            'izdavacka_kuca' => 'required|string',
+            'opis' => 'required|string|max:250',
+        ]);
+        if($validator->fails()){
+            return response()->json($validator->errors());
+        }
+        $album = Album::create([
+            'naziv' => $request->naziv,
+            'datum' =>  $request->datum,
+            'izdavacka_kuca' =>  $request->izdavacka_kuca,
+            'opis' => $request->opis,
+            'user_id' => Auth::user()->id,
+        ]);
+        return response()->json(['Album kreiran uspesno',new AlbumResource($album)]);
     }
 
     /**
@@ -79,7 +99,25 @@ class AlbumController extends Controller
      */
     public function update(Request $request, album $album)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'naziv' => 'required|string|max:100',
+            'datum' => 'required|date',
+            'izdavacka_kuca' => 'required|string|max:100',
+            'opis' => 'required|string|max:250',
+
+        ]);
+        if($validator->fails()){
+            return response()->json($validator->errors());
+        }
+        $album->naziv = $request->naziv;
+        $album->datum = $request->datum;
+        $album->izdavacka_kuca = $request->izdavacka_kuca;
+        $album->opis = $request->opis;
+
+        $album->save();
+        return response()->json(['Album update uspesno',new AlbumResource($album)]);
+
+
     }
 
     /**
@@ -90,6 +128,7 @@ class AlbumController extends Controller
      */
     public function destroy(album $album)
     {
-        //
+        $album->delete();
+        return response()->json('Album obrisan uspesno');
     }
 }

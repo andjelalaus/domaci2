@@ -11,7 +11,7 @@ class Album extends Model
     protected $fillable = [
         'naziv',
         'datum',
-        'izadvacka_kuca',
+        'izdavacka_kuca',
         'opis',
     ];
     public function pesme(){

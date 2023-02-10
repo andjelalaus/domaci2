@@ -6,6 +6,7 @@ use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -64,7 +65,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+     
     }
 
     /**
@@ -74,9 +75,29 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, $user_id)
     {
-        //
+        $validator = Validator::make($request->all(),[
+            'name'=>'required|string|max:255|unique:users',
+            'email'=>'required|string|email|max:255|unique:users',
+            
+        ]);
+
+        if($validator->fails()){
+            return response()->json($validator->errors());
+        }
+
+        $user = User::find($user_id);
+        if(is_null($user)){
+            return response()->json('Not found',401);
+        }
+        else{
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->update();
+
+            return response()->json(new UserResource($user));
+        }
     }
 
     /**
@@ -85,8 +106,20 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy($user_id)
     {
-        //
+        try{
+            $user = User::find($user_id);
+            if(is_null($user)){
+                return response()->json('Not found',401);
+            }
+            else{
+                $user->delete();
+                return response()->json("Successfull");
+            }
+        }
+        catch(\Illuminate\Database\QueryException $e){
+            return response()->json($e);
+        }
     }
 }
